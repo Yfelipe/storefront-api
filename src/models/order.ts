@@ -12,17 +12,17 @@ export type Order = {
 
 export class OrderStore {
 
-    async userOrders(userId: string): Promise<Order[]> {
+    async userOrder(userId: string, orderId: number): Promise<Order[]> {
         try {
             const connection = await Client.connect()
-            const query = 'SELECT * FROM orders INNER JOIN order_products ON orders.id = order_products.order_id WHERE orders.user_id=($1)'
+            const query = 'SELECT * FROM orders INNER JOIN order_products ON orders.id = order_products.order_id WHERE orders.user_id=($1) AND orders.id=($2)'
 
-            const result = await connection.query(query, [userId])
+            const result = await connection.query(query, [userId, orderId])
             connection.release()
 
             return result.rows
         } catch (err) {
-            throw new Error(`Sorry we had an issue finding the orders for user: ${userId}, error: ${err}`)
+            throw new Error(`Sorry we had an issue finding the order: ${orderId} for user: ${userId}, error: ${err}`)
         }
     }
 
