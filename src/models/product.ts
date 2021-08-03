@@ -54,7 +54,7 @@ export class ProductStore {
     async topProducts(): Promise<Product[]> {
         try {
             const connection = await Client.connect()
-            const query = 'SELECT *, count(order_products.product_id) FROM products INNER JOIN order_products ON products.id = order_products.product_id GROUP BY order_products.product_id ORDER BY order_products.product_id LIMIT 5'
+            const query = 'SELECT products.name, count(order_products.product_id) AS "amount ordered" FROM products INNER JOIN order_products ON products.id = order_products.product_id GROUP BY order_products.product_id, products.id ORDER BY order_products.product_id LIMIT 5'
 
             const result = await connection.query(query)
             connection.release()
@@ -65,12 +65,12 @@ export class ProductStore {
         }
     }
 
-    async productsByCategory(categories: Array<string>): Promise<Product[]> {
+    async productsByCategory(category: string): Promise<Product[]> {
         try {
             const connection = await Client.connect()
-            const query = 'SELECT * FROM products WHERE category IN ($1)'
+            const query = 'SELECT * FROM products WHERE ($1) = ANY (category)'
 
-            const result = await connection.query(query, categories)
+            const result = await connection.query(query, [category])
             connection.release()
 
             return result.rows

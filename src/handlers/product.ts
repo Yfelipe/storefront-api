@@ -45,9 +45,9 @@ const topProducts = async (_req: Request, res: Response) => {
 }
 
 const productsByCategory = async (req: Request, res: Response) => {
-    const categories = req.params.categories.split(",")
+    const category = req.params.category
 
-    const products = await store.productsByCategory(categories)
+    const products = await store.productsByCategory(category)
     res.json(products)
 }
 
@@ -56,7 +56,7 @@ const product_routes = (app: express.Application) => {
     app.get('/product/:id', show)
     app.put('/product', verifyToken, create)
     app.get('/top-products', topProducts)
-    app.get('/products/categories/:categories', productsByCategory)
+    app.get('/products/category/:category', productsByCategory)
 }
 
 export default product_routes

@@ -17,21 +17,30 @@ const verifyToken = (req: Request, res: Response, next: NextFunction) => {
     }
 }
 
+const create = async (req: Request, res: Response) => {
+    const userId = req.body.decodedToken.user.id
+
+    const products = await store.create(userId, req.body.products)
+    res.json(products)
+}
+
 const userOrder = async (req: Request, res: Response) => {
-    const userId = req.body.decodedToken.id
+    const userId = req.body.decodedToken.user.id
 
     const products = await store.userOrder(userId, req.params.id as unknown as number)
     res.json(products)
 }
 
 const userCompletedOrders = async (req: Request, res: Response) => {
-    const userId = req.body.decodedToken.id
+    const userId = req.body.decodedToken.user.id
 
     const products = await store.userCompletedOrders(userId)
+
     res.json(products)
 }
 
 const order_routes = (app: express.Application) => {
+    app.put('/order', verifyToken, create)
     app.get('/order/:id', verifyToken, userOrder)
     app.get('/completed-orders', verifyToken, userCompletedOrders)
 }
