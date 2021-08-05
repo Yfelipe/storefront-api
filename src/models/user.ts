@@ -1,11 +1,15 @@
-import Client from '../database'
+import client from '../database'
 import bcrypt from 'bcrypt'
 
-export type User = {
+export interface User {
     id?: number,
-    firstName: string,
-    lastName: string,
-    password: string,
+    user_name: string,
+    first_name: string,
+    last_name: string
+}
+
+export interface UserCreate extends User {
+    password: string
 }
 
 const pepper = process.env.BCRYPT_PASSWORD
@@ -15,8 +19,8 @@ export class UserStore {
 
     async index(): Promise<User[]> {
         try {
-            const connection = await Client.connect()
-            const query = 'SELECT * FROM users'
+            const connection = await client.connect()
+            const query = 'SELECT id, user_name, first_name, last_name FROM users'
 
             const result = await connection.query(query)
             connection.release()
@@ -29,8 +33,8 @@ export class UserStore {
 
     async show(id: string): Promise<User> {
         try {
-            const connection = await Client.connect()
-            const query = 'SELECT * FROM users WHERE id=($1)'
+            const connection = await client.connect()
+            const query = 'SELECT id, user_name, first_name, last_name FROM users WHERE id=($1)'
 
             const result = await connection.query(query, [id])
             connection.release()
@@ -41,17 +45,17 @@ export class UserStore {
         }
     }
 
-    async create(user: User): Promise<User> {
+    async create(user: UserCreate): Promise<User> {
         try {
-            const connection = await Client.connect()
-            const query = 'INSERT INTO users (firstName, lastName, password) VALUES($1, $2, $3) RETURNING *'
+            const connection = await client.connect()
+            const query = 'INSERT INTO users (user_name, first_name, last_name, password) VALUES($1, $2, $3, $4) RETURNING id, user_name, first_name, last_name'
 
             const hash = bcrypt.hashSync(
                 user.password + pepper,
                 parseInt(saltRounds)
             )
 
-            const result = await connection.query(query, [user.firstName, user.lastName, hash])
+            const result = await connection.query(query, [user.first_name+user.last_name, user.first_name, user.last_name, hash])
             connection.release()
 
             return result.rows[0]

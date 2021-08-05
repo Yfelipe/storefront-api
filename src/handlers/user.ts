@@ -1,5 +1,5 @@
 import express, {NextFunction, Request, Response} from 'express';
-import {User, UserStore} from '../models/user';
+import {UserCreate, UserStore} from '../models/user';
 import jwt from 'jsonwebtoken'
 
 const store = new UserStore()
@@ -30,9 +30,10 @@ const show = async (req: Request, res: Response) => {
 }
 
 const create = async (_req: Request, res: Response) => {
-    const newUser: User = {
-        firstName: _req.body.firstName,
-        lastName: _req.body.lastName,
+    const newUser: UserCreate = {
+        user_name: _req.body.firstName + _req.body.lastName,
+        first_name: _req.body.firstName,
+        last_name: _req.body.lastName,
         password: _req.body.password,
     }
 

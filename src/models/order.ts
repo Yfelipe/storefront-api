@@ -1,4 +1,4 @@
-import Client from '../database';
+import client from '../database';
 
 export type Order = {
     id: number,
@@ -20,7 +20,7 @@ export class OrderStore {
     async create(userId: number, products: OrderProducts[]): Promise<Order[]> {
         try {
 
-            const connection = await Client.connect()
+            const connection = await client.connect()
             const orderQuery = 'INSERT INTO orders(status, user_id) VALUES($1, $2) RETURNING id'
 
             const order = await connection.query(orderQuery, ['awaiting', userId])
@@ -42,7 +42,7 @@ export class OrderStore {
 
     async userOrder(userId: string, orderId: number): Promise<Order[]> {
         try {
-            const connection = await Client.connect()
+            const connection = await client.connect()
             const query = 'SELECT * FROM orders INNER JOIN order_products ON orders.id = order_products.order_id WHERE orders.user_id=($1) AND orders.id=($2)'
 
             const result = await connection.query(query, [userId, orderId])
@@ -56,7 +56,7 @@ export class OrderStore {
 
     async userCompletedOrders(userId: string): Promise<Order[]> {
         try {
-            const connection = await Client.connect()
+            const connection = await client.connect()
             const query = 'SELECT * FROM orders INNER JOIN order_products ON orders.id = order_products.order_id WHERE orders.user_id=($1) AND orders.status=($2) GROUP BY orders.id, order_products.id'
 
             const result = await connection.query(query, [userId, 'complete'])

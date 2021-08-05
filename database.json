@@ -5,5 +5,12 @@
     "database": "storefront",
     "user": "frontend",
     "password": "postgres"
+  },
+  "test": {
+    "driver": "pg",
+    "host": "127.0.0.1",
+    "database": "test",
+    "user": "frontend",
+    "password": "postgres"
   }
 }

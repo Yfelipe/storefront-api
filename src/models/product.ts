@@ -1,4 +1,4 @@
-import Client from '../database';
+import client from '../database';
 
 export type Product = {
     id?: number,
@@ -11,7 +11,7 @@ export class ProductStore {
 
     async index(): Promise<Product[]> {
         try {
-            const connection = await Client.connect()
+            const connection = await client.connect()
             const query = 'SELECT * FROM products'
 
             const result = await connection.query(query)
@@ -25,7 +25,7 @@ export class ProductStore {
 
     async show(id: string): Promise<Product> {
         try {
-            const connection = await Client.connect()
+            const connection = await client.connect()
             const query = 'SELECT * FROM products WHERE id=($1)'
 
             const result = await connection.query(query, [id])
@@ -39,7 +39,7 @@ export class ProductStore {
 
     async create(product: Product): Promise<Product> {
         try {
-            const connection = await Client.connect()
+            const connection = await client.connect()
             const query = 'INSERT INTO products (name, price, category) VALUES($1, $2, $3) RETURNING *'
 
             const result = await connection.query(query, [product.name, product.price, product.category])
@@ -53,7 +53,7 @@ export class ProductStore {
 
     async topProducts(): Promise<Product[]> {
         try {
-            const connection = await Client.connect()
+            const connection = await client.connect()
             const query = 'SELECT products.name, count(order_products.product_id) AS "amount ordered" FROM products INNER JOIN order_products ON products.id = order_products.product_id GROUP BY order_products.product_id, products.id ORDER BY order_products.product_id LIMIT 5'
 
             const result = await connection.query(query)
@@ -67,7 +67,7 @@ export class ProductStore {
 
     async productsByCategory(category: string): Promise<Product[]> {
         try {
-            const connection = await Client.connect()
+            const connection = await client.connect()
             const query = 'SELECT * FROM products WHERE ($1) = ANY (category)'
 
             const result = await connection.query(query, [category])
