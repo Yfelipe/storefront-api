@@ -5,38 +5,75 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 ## API Endpoints
 #### Products
-- Index 
+- Index
+  - Get all products
+    - GET /products
 - Show
+  - Get product by ID
+    - GET /product/{id}
 - Create [token required]
-- [OPTIONAL] Top 5 most popular products 
-- [OPTIONAL] Products by category (args: product category)
+  - Create a product
+    - PUT /product (Requires auth token)
+    - Example Body:
+      ```
+      {
+        name: 'Monster Energy Drink',
+        price: 3,
+        categories: ['energy drink']
+      }
+      ```
+- [OPTIONAL] Top 5 most popular products
+  - Get top 5 sold products
+    - GET /top-products
+- [OPTIONAL] Products by category (args: category)
+  - Get products by category
+      - GET /products/category/{category}
 
 #### Users
 - Index [token required]
+  - Get all users
+    - GET /users (Requires auth token)
 - Show [token required]
-- Create N[token required]
+  - Get user by ID in token
+    - GET /users (Requires auth token)
+- Create New
+  - Create a user
+    - PUT /user
+    - Example Body:
+      ```
+      {
+        "first_name":"Sheldon",
+        "last_name":"Cooper",
+        "password":"bazinga"
+      }
+      ```
 
 #### Orders
 - Current Order by user (args: user id)[token required]
+  - Get order by ID and user id in token
+    - GET /order/{id} (Requires auth token)
 - [OPTIONAL] Completed Orders by user (args: user id)[token required]
+  - Get user completed orders
+    - GET /completed-orders (Requires auth token)
 
 ## Data Shapes
 #### Product
 -  id
 - name
 - price
-- [OPTIONAL] category
+- [OPTIONAL] categories
 
 #### User
 - id
-- firstName
-- lastName
+- first_name
+- last_name
 - password
 
 #### Orders
 - id
-- id of each product in the order
-- quantity of each product in the order
 - user_id
 - status of order (active or complete)
+- Uses a relational table order_products with:
+  - product_id
+  - quantity in the order
 

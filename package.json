@@ -7,7 +7,8 @@
     "start": "nodemon src/server.ts",
     "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess 'node ./dist/server.js'",
     "test": "db-migrate db:drop test && db-migrate db:create test && db-migrate --env test up && ENV=test jasmine-ts --random=false && db-migrate db:drop test",
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "prettier": "prettier --config .prettierrc 'src/**/*.ts' --write"
   },
   "author": "Udacity",
   "license": "ISC",
@@ -20,7 +21,8 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "pg": "^8.5.1"
+    "pg": "^8.5.1",
+    "prettier": "^2.3.2"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
