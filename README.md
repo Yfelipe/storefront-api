@@ -27,6 +27,11 @@ docker-compose up --build -d
 npm install
 ```
 
+### Run migrations to create db
+```
+npm run migrate
+```
+
 ### Running tests
 This project uses Jasmine tests, to run the tests run:
 ```bash
