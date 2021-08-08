@@ -58,22 +58,22 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 ## Data Shapes
 #### Product
--  id
-- name
-- price
-- [OPTIONAL] categories
+-  id (number)
+- name (string)
+- price (number)
+- [OPTIONAL] categories (array of string)
 
 #### User
-- id
-- first_name
-- last_name
-- password
+- id (number)
+- first_name (string)
+- last_name (string)
+- password (string)
 
 #### Orders
-- id
-- user_id
+- id (number)
+- user_id (number)
 - status of order (active or complete)
 - Uses a relational table order_products with:
-  - product_id
-  - quantity in the order
+  - product_id (number)
+  - quantity in the order (number)
 
