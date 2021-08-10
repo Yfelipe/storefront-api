@@ -58,22 +58,34 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 ## Data Shapes
 #### Product
--  id (number)
-- name (string)
-- price (number)
-- [OPTIONAL] categories (array of string)
+- id         | integer               | not null
+- name       | character varying(64) | not null
+- price      | integer               | not null
+- categories | character varying[]
 
 #### User
-- id (number)
-- first_name (string)
-- last_name (string)
-- password (string)
+- id         | integer | not null
+- user_name  | character varying | not null
+- first_name | character varying | not null
+- last_name  | character varying | not null
+- password   | character varying | not null
 
 #### Orders
-- id (number)
-- user_id (number)
-- status of order (active or complete)
-- Uses a relational table order_products with:
-  - product_id (number)
-  - quantity in the order (number)
+- id      | integer | not null
+- status  | character varying(8) | not null
+- user_id | bigint
+- Foreign-key constraints:
+  - "orders_user_id_fkey" FOREIGN KEY (user_id) REFERENCES users(id)
+
+
+#### Order Products
+- id         | integer | not null
+- quantity   | integer | not null
+- order_id   | bigint  |
+- product_id | bigint  |
+- Foreign-key constraints:
+  - "order_products_order_id_fkey" FOREIGN KEY (order_id) REFERENCES orders(id)
+  - "order_products_product_id_fkey" FOREIGN KEY (product_id) REFERENCES products(id)
+  
+
 

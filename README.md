@@ -21,6 +21,8 @@ An example env file is provided, so it only needs to be copied with copy & paste
 ```
 docker-compose up --build -d
 ```
+* Because we use docker-compose the DB will be created automatically and exposed on port 5432 and only needs the migrations to be ran which is done after npm install below.
+* The DB name and credentials are set in the env file.  
 
 ### Install the project dependencies
 ```bash
@@ -30,6 +32,13 @@ npm install
 ### Run migrations to create db
 ```
 npm run migrate
+```
+
+###[optional] Access postgres
+```bash
+docker-compose exec postgres bash
+su postgres
+psql storefront -U frontend
 ```
 
 ### Running tests
