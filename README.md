@@ -34,7 +34,7 @@ npm install
 npm run migrate
 ```
 
-###[optional] Access postgres
+### [optional] Access postgres
 ```bash
 docker-compose exec postgres bash
 su postgres
