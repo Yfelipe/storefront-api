@@ -3,7 +3,7 @@ import { OrderProducts, OrderStore } from '../order';
 const store = new OrderStore();
 
 const newTestOrder: OrderProducts = {
-  id: 1,
+  id: 2,
   quantity: 1
 };
 
@@ -30,11 +30,11 @@ describe('Order model tests: ', () => {
     });
 
     it('Should return user order by id', async () => {
-      const userOrder = await store.userOrder('1', 1);
+      const userOrder = await store.userOrder('1', 2);
 
       expect(userOrder).toEqual([
         {
-          order_id: 1,
+          order_id: 2,
           status: 'active',
           product_name: 'Monster Energy Drink',
           price: 3,

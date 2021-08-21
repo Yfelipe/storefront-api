@@ -6,9 +6,15 @@ export interface User {
   user_name: string;
   first_name: string;
   last_name: string;
+  password?: string;
 }
 
 export interface UserCreate extends User {
+  password: string;
+}
+
+export interface UserLogin {
+  userName: string;
   password: string;
 }
 
@@ -69,6 +75,30 @@ export class UserStore {
       return result.rows[0];
     } catch (err) {
       throw new Error(`Sorry we had an issue adding the user, error: ${err}`);
+    }
+  }
+
+  async authenticate(userLogin: UserLogin): Promise<User | null> {
+    try {
+      const connection = await client.connect();
+      const query =
+        'SELECT id, user_name, first_name, last_name, password FROM users WHERE user_name=($1)';
+
+      const result = await connection.query(query, [userLogin.userName]);
+      connection.release();
+
+      const user = result.rows[0];
+
+      if (
+        user &&
+        bcrypt.compareSync(userLogin.password + pepper, user.password)
+      ) {
+        return user;
+      }
+
+      return null;
+    } catch (err) {
+      throw new Error(`Sorry we had an issue logging in, error: ${err}`);
     }
   }
 }

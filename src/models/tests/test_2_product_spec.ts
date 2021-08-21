@@ -9,7 +9,7 @@ const newProduct: Product = {
 };
 
 const expectedProduct = {
-  id: 1,
+  id: 2,
   name: 'Monster Energy Drink',
   price: 3,
   categories: ['energy drink']
@@ -47,22 +47,22 @@ describe('Product model tests: ', () => {
 
     it('Should return an array of products containing the new product', async () => {
       const productArray = await store.index();
-      expect(productArray).toEqual([expectedProduct]);
+      expect(productArray[1]).toEqual(expectedProduct);
     });
 
-    it('Should return the product of id 1', async () => {
-      const product = await store.show('1');
+    it('Should return the product of id 2', async () => {
+      const product = await store.show('2');
       expect(product).toEqual(expectedProduct);
     });
 
-    it('Should return empty array for top products as there is no orders', async () => {
+    it('Should return an array with one product for top products', async () => {
       const products = await store.topProducts();
-      expect(products).toEqual([]);
+      expect(products.length).toEqual(1);
     });
 
     it('Should return array with expected product', async () => {
       const products = await store.productsByCategory('energy drink');
-      expect(products).toEqual([expectedProduct]);
+      expect(products[1]).toEqual(expectedProduct);
     });
 
     it('Should return an empty array as there is no product in the soda category', async () => {

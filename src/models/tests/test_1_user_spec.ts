@@ -22,6 +22,10 @@ describe('User model tests: ', () => {
     it('Should have a create method', () => {
       expect(store.create).toBeDefined();
     });
+
+    it('Should have a authenticate method', () => {
+      expect(store.authenticate).toBeDefined();
+    });
   });
 
   describe('Test user methods: ', () => {
@@ -29,7 +33,7 @@ describe('User model tests: ', () => {
       const user = await store.create(newTestUser);
 
       expect(user).toEqual({
-        id: 1,
+        id: 2,
         user_name: 'SheldonCooper',
         first_name: 'Sheldon',
         last_name: 'Cooper'
@@ -38,23 +42,35 @@ describe('User model tests: ', () => {
 
     it('Should return an array of users containing the new user', async () => {
       const userArray = await store.index();
-      expect(userArray).toEqual([
-        {
-          id: 1,
-          user_name: 'SheldonCooper',
-          first_name: 'Sheldon',
-          last_name: 'Cooper'
-        }
-      ]);
-    });
-
-    it('Should return a user with id 1', async () => {
-      const user = await store.show('1');
-      expect(user).toEqual({
-        id: 1,
+      expect(userArray[1]).toEqual({
+        id: 2,
         user_name: 'SheldonCooper',
         first_name: 'Sheldon',
         last_name: 'Cooper'
+      });
+    });
+
+    it('Should return a user with id 2', async () => {
+      const user = await store.show('2');
+      expect(user).toEqual({
+        id: 2,
+        user_name: 'SheldonCooper',
+        first_name: 'Sheldon',
+        last_name: 'Cooper'
+      });
+    });
+
+    it('Should return a user with id 2 for authentication', async () => {
+      const user = await store.authenticate({
+        userName: 'SheldonCooper',
+        password: 'bazinga'
+      });
+      expect(user).toEqual({
+        id: 2,
+        user_name: 'SheldonCooper',
+        first_name: 'Sheldon',
+        last_name: 'Cooper',
+        password: jasmine.any(String)
       });
     });
   });
